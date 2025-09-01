@@ -11,7 +11,6 @@ body {
     min-height: 100vh;
 }
 
-/* Header Navigation */
 .header-nav {
     background: rgba(0, 0, 0, 0.8);
     padding: 10px 20px;
@@ -61,7 +60,6 @@ body {
     color: rgba(255, 255, 255, 0.6);
 }
 
-/* Main Header */
 .main-header {
     background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
     padding: 40px 20px;
@@ -104,7 +102,6 @@ body {
     box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
 }
 
-/* Forms Container */
 .forms-container {
     display: flex;
     gap: 20px;
@@ -147,7 +144,7 @@ body {
     font-weight: bold;
 }
 
-/* Inputs e textarea sempre claros! */
+
 .form-group input,
 .form-group textarea {
     width: 100%;
@@ -166,7 +163,7 @@ body {
     min-height: 80px;
 }
 
-/* Destaca foco de qualquer campo normalmente */
+
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
@@ -174,7 +171,6 @@ body {
     box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
 }
 
-/* SELECT: SÓ O QUE ESTIVER EM .select-group RECEBE CUSTOM SELEÇÃO */
 .select-group select {
     appearance: none;
     -webkit-appearance: none;
@@ -183,26 +179,24 @@ body {
     color: #fff;
     border: 1px solid #808080;
     border-radius: 5px;
-    padding-right: 2.2em; /* espaço pro ícone */
+    padding-right: 2.2em;
     height: 2.5em;
     font-size: 14px;
     margin-top: 2px;
-    background-image: none; /* remove o background svg */
+    background-image: none; 
 }
 
-/* Custom seta SÓ na .select-group! */
 .select-group::after {
     content: "▼";
     color: #fff;
     font-size: 0.95em;
     position: absolute;
     right: 18px;
-    top: 39px; /* ajuste se sua altura de campo mudar */
+    top: 39px; 
     pointer-events: none;
     z-index: 2;
 }
 
-/* Esconde icone padrão antigo do windows/IE/Edge */
 .select-group select::-ms-expand {
     display: none;
 }
@@ -218,9 +212,6 @@ body {
     color: #fff;
 }
 
-/* NUNCA outros campos (input/textarea) recebem a seta ou o fundo escuro de select! */
-
-/* Botão principal */
 .btn-primary {
     background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
     color: white;
@@ -240,7 +231,6 @@ body {
     box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
 }
 
-/* Games Grid */
 .games-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -285,7 +275,6 @@ body {
     line-height: 1.4;
 }
 
-/* Table Styles */
 .table-container {
     margin: 20px;
     background: rgba(26, 26, 26, 0.9);
@@ -333,7 +322,6 @@ tr:hover {
     transform: translateY(-1px);
 }
 
-/* Footer */
 .footer-section {
     background: rgba(26, 26, 26, 0.9);
     padding: 20px;
@@ -354,7 +342,6 @@ tr:hover {
     display: inline-block;
 }
 
-/* Modal Styles */
 .modal {
     display: none;
     position: fixed;
@@ -366,7 +353,7 @@ tr:hover {
     overflow: auto;
     background-color: rgba(0,0,0,0.8);
     justify-content: center;
-    align-items: flex-start; /* Alinha no topo */
+    align-items: flex-start; 
     padding: 50px 0;
     box-sizing: border-box;
 }
@@ -396,14 +383,13 @@ tr:hover {
     color: #ffffff;
 }
 
-/* Ensure form inputs are responsive */
 .form-group input,
 .form-group textarea,
 .form-group select {
     width: 100%;
     box-sizing: border-box;
 }
-/* Botão Danger */
+
 .danger-btn {
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   color: #fff;
@@ -475,7 +461,6 @@ tr:hover {
   box-shadow: 0 4px 15px #8b5cf6a9;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
      .editar-btn,
   .deletar-btn {
@@ -487,7 +472,7 @@ tr:hover {
     right: 10px;
   }
      .modal-content {
-        width: 90%; /* More compact width for small screens */
+        width: 90%; 
     }
     .forms-container {
         flex-direction: column;
@@ -518,7 +503,6 @@ tr:hover {
     }
 }
 
-/* Scrollbar Customization */
 ::-webkit-scrollbar {
     width: 8px;
 }
