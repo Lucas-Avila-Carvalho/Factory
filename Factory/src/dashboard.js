@@ -1,3 +1,6 @@
+// ======================= IMPORTS MOCK ========================
+import { jogos as jogosMock } from "./mocks/jogos.js";
+
 // ======================= UTILITÁRIOS ========================
 
 // Helper para obter elemento por ID (DRY)
@@ -9,36 +12,49 @@ function fecharTodosModais() {
   modais.forEach(m => m.style.display = 'none');
 }
 
+// ==================== ESTADO LOCAL ==========================
+// Cópia mutável do mock (para inserir, editar, deletar em memória)
+let jogos = [...jogosMock];
+
 // ==================== CARREGAR JOGOS =========================
 
 async function carregarJogos(filtros = {}) {
   try {
-    const params = new URLSearchParams(filtros).toString();
-    const url = `/Factory/api/listar_jogos.php${params ? '?' + params : ''}`;
-    const resposta = await fetch(url);
+    let lista = [...jogos];
 
-    if (!resposta.ok) {
-      const textoErro = await resposta.text();
-      console.error('Resposta com erro:', resposta.status, textoErro);
-      throw new Error('Erro ao carregar dados da API');
+    // aplica filtros locais
+    if (filtros.buscaNome) {
+      lista = lista.filter(j =>
+        j.nome.toLowerCase().includes(filtros.buscaNome.toLowerCase())
+      );
+    }
+    if (filtros.genero) {
+      lista = lista.filter(j => j.genero === filtros.genero);
+    }
+    if (filtros.classificacao) {
+      lista = lista.filter(j => j.classificacao === filtros.classificacao);
+    }
+    if (filtros.modoJogo) {
+      lista = lista.filter(j => j.modo_jogo === filtros.modoJogo);
+    }
+    if (filtros.status) {
+      lista = lista.filter(j => j.status === filtros.status);
     }
 
-    const jogos = await resposta.json();
     const gamesGrid = $id('gamesGrid');
     gamesGrid.innerHTML = '';
 
-    if (!Array.isArray(jogos) || jogos.length === 0) {
+    if (!Array.isArray(lista) || lista.length === 0) {
       gamesGrid.innerHTML = `<div class="aviso">Nenhum jogo encontrado</div>`;
       return;
     }
 
-    // Estado dos botões globais de editar/deletar
+    // Estado dos botões globais
     const modoDelete = document.body.classList.contains('deletar-active');
     const modoEditar = document.body.classList.contains('editar-active');
 
-    jogos.forEach(jogo => {
-      let imgSrc = jogo.imagemCapa ? jogo.imagemCapa.replace(/\\/g, '/') : '';
-      imgSrc = imgSrc.replace(/^\/?Factory\/public\//i, '').replace(/^\\?Factory\\public\\/, '');
+    lista.forEach(jogo => {
+      let imgSrc = jogo.imagem_capa ? jogo.imagem_capa.replace(/\\/g, '/') : '';
       if (imgSrc && !imgSrc.startsWith('/') && !imgSrc.startsWith('http')) {
         imgSrc = '/Factory/public/' + imgSrc;
       }
@@ -53,7 +69,6 @@ async function carregarJogos(filtros = {}) {
         </div>
       `;
 
-      // Só exibe os botões se o modo correspondente estiver ativado (por classe no body)
       if (modoDelete) {
         const btnDeletar = document.createElement('button');
         btnDeletar.className = 'deletar-btn';
@@ -85,7 +100,7 @@ async function carregarJogos(filtros = {}) {
     if (gamesGrid) {
       gamesGrid.innerHTML = `
         <div class="aviso erro">
-          Erro ao carregar jogos do banco.<br>
+          Erro ao carregar jogos mockados.<br>
           <small>${erro.message}</small>
         </div>
       `;
@@ -111,7 +126,6 @@ function aplicarFiltros() {
 document.addEventListener('DOMContentLoaded', () => {
   const filtroForm = $id('filtroForm');
   if (filtroForm) {
-    // reativo para selects
     ['genero', 'classificacao', 'modoJogo', 'status'].forEach(campo => {
       if (filtroForm[campo]) {
         filtroForm[campo].addEventListener('change', aplicarFiltros);
@@ -121,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (buscaInput) {
       buscaInput.addEventListener('input', aplicarFiltros);
     }
-    // reativo para nome, a cada letra
     if (filtroForm.nome) {
       filtroForm.nome.addEventListener('input', aplicarFiltros);
     }
@@ -160,25 +173,15 @@ async function inserirJogo() {
   if (!form) { alert('Formulário de cadastro não encontrado'); return; }
   const formData = new FormData(form);
 
-  try {
-    const response = await fetch('/Factory/api/inserir_jogo.php', {
-      method: 'POST',
-      body: formData
-    });
+  const novo = Object.fromEntries(formData.entries());
+  novo.id = jogos.length ? Math.max(...jogos.map(j => j.id)) + 1 : 1;
 
-    const data = await response.json();
-    if (data.success) {
-      alert('Jogo inserido com sucesso!');
-      form.reset();
-      fecharTodosModais();
-      carregarJogos();
-    } else {
-      alert('Erro ao inserir jogo: ' + (data.erro || 'Tente novamente.'));
-    }
+  jogos.push(novo);
 
-  } catch (error) {
-    alert('Erro na comunicação com o servidor: ' + error);
-  }
+  alert('Jogo inserido com sucesso (mock)!');
+  form.reset();
+  fecharTodosModais();
+  carregarJogos();
 }
 window.inserirJogo = inserirJogo;
 
@@ -186,20 +189,11 @@ window.inserirJogo = inserirJogo;
 
 async function deletarJogo(id) {
   if (!confirm("Tem certeza de que deseja deletar este jogo?")) return;
-  try {
-    const resposta = await fetch(`/Factory/api/deletar_jogo.php?id=${encodeURIComponent(id)}`, {
-      method: 'DELETE'
-    });
-    const data = await resposta.json();
-    if (data.success) {
-      alert('Jogo deletado com sucesso!');
-      carregarJogos();
-    } else {
-      alert('Erro ao deletar jogo: ' + (data.erro || 'Tente novamente.'));
-    }
-  } catch (error) {
-    alert('Erro na comunicação com o servidor: ' + error);
-  }
+
+  jogos = jogos.filter(j => j.id !== id);
+
+  alert('Jogo deletado com sucesso (mock)!');
+  carregarJogos();
 }
 window.deletarJogo = deletarJogo;
 
@@ -209,27 +203,15 @@ async function editarJogo() {
   const form = $id('editarJogoForm');
   if (!form) { alert('Formulário de edição não encontrado.'); return; }
   const formData = new FormData(form);
+  const dados = Object.fromEntries(formData.entries());
 
   if (!confirm("Tem certeza de que deseja salvar as alterações deste jogo?")) return;
 
-  try {
-    const response = await fetch('/Factory/api/editar_jogo.php', {
-      method: 'POST',
-      body: formData
-    });
+  jogos = jogos.map(j => j.id == dados.id ? { ...j, ...dados } : j);
 
-    const data = await response.json();
-
-    if (data.success) {
-      alert('Jogo editado com sucesso!');
-      fecharTodosModais();
-      carregarJogos();
-    } else {
-      alert('Erro ao editar jogo: ' + (data.erro || 'Erro desconhecido.'));
-    }
-  } catch (error) {
-    alert('Erro na comunicação com o servidor: ' + error);
-  }
+  alert('Jogo editado com sucesso (mock)!');
+  fecharTodosModais();
+  carregarJogos();
 }
 window.editarJogo = editarJogo;
 
@@ -280,7 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
       btnCancelarDeletar.style.display = 'none';
       carregarJogos();
     });
-    // ESC cancela modo deletar
     document.addEventListener('keydown', function (e) {
       if (document.body.classList.contains('deletar-active') && e.key === 'Escape') {
         btnCancelarDeletar.click();
@@ -303,7 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
       btnCancelarEditar.style.display = 'none';
       carregarJogos();
     });
-    // ESC cancela modo editar
     document.addEventListener('keydown', function (e) {
       if (document.body.classList.contains('editar-active') && e.key === 'Escape') {
         btnCancelarEditar.click();
