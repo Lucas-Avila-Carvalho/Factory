@@ -1,4 +1,5 @@
 import './style.css'
+import "./dashboard.js"
 
 document.querySelector('#app').innerHTML = `
   <nav class="header-nav">
