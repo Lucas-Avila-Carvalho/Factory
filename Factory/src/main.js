@@ -18,18 +18,15 @@ document.querySelector('#app').innerHTML = `
     <button class="nav-btn menu-btn">Adicionar Jogo +</button>
   </nav>
 
-  <!-- Main Header -->
   <header class="main-header">
     <h1>Factory</h1>
     <p>Nós hospedamos 610.982 mods para 3.109 jogos de 140.862 autores...</p>
     <button class="ranking-btn">Ranking</button>
   </header>
 
-  <!-- Filtros -->
   <div class="form-section">
     <h2>Filtros</h2>
     <form id="filtroForm">
-      <!-- Gênero -->
       <div class="form-group select-group">
         <label for="filtroNome">Procurar por nome:</label>
         <input id="filtroNome" name="buscaNome" type="text" placeholder="Digite para buscar...">
@@ -48,7 +45,6 @@ document.querySelector('#app').innerHTML = `
           <option value="Outro">Outro</option>
         </select>
       </div>
-      <!-- Classificação -->
       <div class="form-group select-group">
         <label for="filtroClassificacao">Classificação:</label>
         <select id="filtroClassificacao" name="classificacao">
@@ -61,7 +57,6 @@ document.querySelector('#app').innerHTML = `
           <option value="18+">18+</option>
         </select>
       </div>
-      <!-- Modo de Jogo -->
       <div class="form-group select-group">
         <label for="filtroModoJogo">Modo de Jogo:</label>
         <select id="filtroModoJogo" name="modo_jogo">
@@ -73,7 +68,6 @@ document.querySelector('#app').innerHTML = `
           <option value="Offline">Offline</option>
         </select>
       </div>
-      <!-- Status -->
       <div class="form-group select-group">
         <label for="filtroStatus">Status:</label>
         <select id="filtroStatus" name="status">
@@ -87,10 +81,8 @@ document.querySelector('#app').innerHTML = `
     </form>
   </div>
 
-  <!-- Games Grid -->
   <div class="games-grid" id="gamesGrid"></div>
 
-  <!-- Footer Section -->
   <footer class="footer-section">
     <div style="display: flex; align-items: center; justify-content: center; gap: 20px;">
       <div class="footer-title">Todos os jogos</div>
@@ -105,7 +97,6 @@ document.querySelector('#app').innerHTML = `
     </div>
   </footer>
 
-  <!-- Modal de Cadastro -->
   <div class="modal" id="modalCadastrarJogo">
     <div class="modal-content">
       <span class="close-modal">&times;</span>
@@ -191,7 +182,6 @@ document.querySelector('#app').innerHTML = `
     </div>
   </div>
 
-  <!-- Modal de Edição -->
   <div class="modal" id="modalEditarJogo" style="display:none;">
     <div class="modal-content">
       <span id="fecharModalEditar" class="close-modal">&times;</span>
