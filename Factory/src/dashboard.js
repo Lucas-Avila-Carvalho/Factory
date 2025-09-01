@@ -1,28 +1,14 @@
-// ======================= IMPORTS MOCK ========================
 import { jogos as jogosMock } from "./mocks/jogos.js";
-
-// ======================= UTILITÁRIOS ========================
-
-// Helper para obter elemento por ID (DRY)
 const $id = id => document.getElementById(id);
-
-// Helper para fechar todos modais conhecidos
 function fecharTodosModais() {
   const modais = document.querySelectorAll('.modal, .modal-editar');
   modais.forEach(m => m.style.display = 'none');
 }
 
-// ==================== ESTADO LOCAL ==========================
-// Cópia mutável do mock (para inserir, editar, deletar em memória)
 let jogos = [...jogosMock];
-
-// ==================== CARREGAR JOGOS =========================
-
 async function carregarJogos(filtros = {}) {
   try {
     let lista = [...jogos];
-
-    // aplica filtros locais
     if (filtros.buscaNome) {
       lista = lista.filter(j =>
         j.nome.toLowerCase().includes(filtros.buscaNome.toLowerCase())
@@ -48,8 +34,6 @@ async function carregarJogos(filtros = {}) {
       gamesGrid.innerHTML = `<div class="aviso">Nenhum jogo encontrado</div>`;
       return;
     }
-
-    // Estado dos botões globais
     const modoDelete = document.body.classList.contains('deletar-active');
     const modoEditar = document.body.classList.contains('editar-active');
 
@@ -109,8 +93,6 @@ async function carregarJogos(filtros = {}) {
 }
 window.carregarJogos = carregarJogos;
 
-// ===================== FILTROS ===========================
-
 function aplicarFiltros() {
   const filtroForm = $id('filtroForm');
   const filtros = {};
@@ -141,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// ============ MODAL DE CADASTRO (NOVO JOGO) ===========
 
 document.addEventListener('DOMContentLoaded', () => {
   const menuBtn = document.querySelector('.menu-btn');
@@ -166,8 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// ============ INSERIR NOVO JOGO ================
-
 async function inserirJogo() {
   const form = $id('inserirJogoForm');
   if (!form) { alert('Formulário de cadastro não encontrado'); return; }
@@ -185,8 +164,6 @@ async function inserirJogo() {
 }
 window.inserirJogo = inserirJogo;
 
-// ============== DELETAR JOGO ===================
-
 async function deletarJogo(id) {
   if (!confirm("Tem certeza de que deseja deletar este jogo?")) return;
 
@@ -197,7 +174,6 @@ async function deletarJogo(id) {
 }
 window.deletarJogo = deletarJogo;
 
-// ================ EDITAR JOGO ================
 
 async function editarJogo() {
   const form = $id('editarJogoForm');
@@ -215,7 +191,6 @@ async function editarJogo() {
 }
 window.editarJogo = editarJogo;
 
-// ============== MODAL DE EDIÇÃO (ABRIR E FECHAR) =============
 
 function abrirModalEditarJogo(jogo) {
   const modal = $id('modalEditarJogo');
@@ -246,7 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ============== MODO DELETAR E EDITAR GRID =============
   const btnAtivarDeletar = document.getElementById('ativarModoDeletarBtn');
   const btnCancelarDeletar = document.getElementById('cancelarModoDeletarBtn');
   if (btnAtivarDeletar && btnCancelarDeletar) {
@@ -291,6 +265,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ============== INICIALIZAÇÃO =============
   carregarJogos();
 });

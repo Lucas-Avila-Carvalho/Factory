@@ -1,6 +1,6 @@
 import './style.css'
 import "./dashboard.js"
-import { jogos } from "./mocks/jogos.js"
+
 
 document.querySelector('#app').innerHTML = `
   <nav class="header-nav">
